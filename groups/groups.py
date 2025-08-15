@@ -1,5 +1,4 @@
 """A module implementing the basic functionality of mathematical groups.
-
 This version of the module uses inheritance and defines the base class as an
 :class:`abc.ABC`.
 """
@@ -12,7 +11,6 @@ from log_decorator import log_call
 
 class Element:
     """An element of the specified group.
-
     Parameters
     ----------
     group: Group
@@ -44,9 +42,7 @@ class Element:
 
 class Group(ABC):
     """A base class containing methods common to many groups.
-
     Each subclass represents a family of parametrised groups.
-
     Parameters
     ----------
     n: int
@@ -94,13 +90,13 @@ class CyclicGroup(Group):
 
     def _validate(self, value):
         """Ensure that value is a legitimate element value in this group."""
+        super()._validate(value)
         if not (isinstance(value, Integral) and 0 <= value < self.n):
             raise ValueError("Element value must be an integer"
                              f" in the range [0, {self.n})")
 
     def operation(self, a, b):
         """Perform the group operation on two values.
-
         The group operation is addition modulo n.
         """
         return (a + b) % self.n
@@ -113,6 +109,7 @@ class GeneralLinearGroup(Group):
 
     def _validate(self, value):
         """Ensure that value is a legitimate element value in this group."""
+        super()._validate(value)
         value = np.asarray(value)
         if not (value.shape == (self.n, self.n)):
             raise ValueError("Element value must be a "
@@ -121,7 +118,6 @@ class GeneralLinearGroup(Group):
 
     def operation(self, a, b):
         """Perform the group operation on two values.
-
         The group operation is matrix multiplication.
         """
         return a @ b
